@@ -47,10 +47,10 @@ sh -c 'echo Alice > /mnt/sheepfs/vdi/mount'
 mkfs.xfs /mnt/sheepfs/volume/Alice
 mkdir -p /mnt/alice
 mount -o loop /mnt/sheepfs/volume/Alice /mnt/alice
-sh -c 'echo "# fallocate -l 1g /mnt/alice/dummy.dd"'
+echo "# fallocate -l 1g /mnt/alice/dummy.dd"
 fallocate -l 1g /mnt/alice/dummy.dd
 sync
-ls -lad /mnt/alice/dummy.dd
+ls -lah /mnt/alice/dummy.dd
 df -hT
 EOF
 
