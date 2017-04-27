@@ -1,0 +1,22 @@
+# vi: set ft=dockerfile :
+
+FROM centos:6
+
+RUN yum install -y epel-release && \
+        yum groupinstall -y "Base" "Development Tools" && \
+        yum install -y --nogpgcheck http://ymu.dl.osdn.jp/linux-ha/66141/pacemaker-repo-1.1.14-1.1.el6.x86_64.rpm && \
+        yum install -y corosync corosynclib corosynclib-devel && \
+        yum install -y userspace-rcu userspace-rcu-devel yasm yasm-devel && \
+        yum install -y fuse fuse-devel && \
+        yum install -y rpm-build rpmdevtools rpmlint && \
+        curl -L -o /etc/yum.repos.d/bigtop.repo http://www.apache.org/dist/bigtop/bigtop-1.1.0/repos/centos6/bigtop.repo && \
+        yum install -y --nogpgcheck zookeeper-native && \
+        yum clean all
+
+WORKDIR /root/sheepdog
+RUN git clone --depth=1 https://github.com/sheepdog/sheepdog
+RUN git submodule update --init ./tests/unit/unity && \
+    git submodule update --init ./tests/unit/cmock
+RUN ./autogen.sh && \
+    ./configure --enable-corosync --enable-zookeeper --enable-sheepfs && \
+    LANG=C make -j8 rpm
