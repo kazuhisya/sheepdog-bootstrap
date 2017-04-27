@@ -13,8 +13,8 @@ RUN yum install -y epel-release && \
         yum install -y --nogpgcheck zookeeper-native && \
         yum clean all
 
+RUN git clone --depth=1 https://github.com/sheepdog/sheepdog /root/sheepdog
 WORKDIR /root/sheepdog
-RUN git clone --depth=1 https://github.com/sheepdog/sheepdog
 RUN git submodule update --init ./tests/unit/unity && \
     git submodule update --init ./tests/unit/cmock
 RUN ./autogen.sh && \
