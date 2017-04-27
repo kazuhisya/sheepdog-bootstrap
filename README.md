@@ -1,1 +1,1 @@
-# vagrant-sheepdog
+# sheepdog-bootstrap
