@@ -1,0 +1,46 @@
+# vi: set ft=ruby :
+
+### from git
+$from_git = <<EOF
+sudo yum install -y git
+git clone --depth 1 -b test-centos https://github.com/kazuhisya/sheepdog
+cd ./sheepdog
+
+# prepare
+./tests/script/prepare_for_test
+
+# exec test
+#./tests/script/exec_unit
+#./tests/script/exec_operation
+#./tests/script/exec_functional
+EOF
+
+
+### from local
+$from_local = <<EOF
+cd /vagrant/sheepdog
+
+# prepare
+./tests/script/prepare_for_test
+
+# exec test
+#./tests/script/exec_unit
+#./tests/script/exec_operation
+#./tests/script/exec_functional
+EOF
+
+
+### main
+Vagrant.configure(2) do |config|
+  config.vm.box = "centos/7"
+
+  # libvirt settings
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.cpus = 4
+    libvirt.memory = 4096
+  end
+
+  #config.vm.synced_folder "./sheepdog", "/vagrant/sheepdog", disabled: "false", type: "rsync"
+  config.vm.provision "shell", privileged: false, inline: $from_git
+  #config.vm.provision "shell", privileged: false, inline: $from_local
+end
