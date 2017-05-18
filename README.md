@@ -40,6 +40,8 @@ List:
     - Zookeeper x1
     - CentOS7.x Sheepdog x5 (form rpm)
       - rpm from [copr repo](https://copr.fedorainfracloud.org/coprs/khara/sheepdog/)
+- [vagrant/test](vagrant/test)
+    - tests for CentOS7.x
 
 
 e.g.
