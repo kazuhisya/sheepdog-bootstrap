@@ -1,6 +1,6 @@
 # sheepdog-bootstrap
 
-This repository provides unofficial verification environment for docker or vagrant.
+This repository provides unofficial sheepdog verification environment for docker or vagrant.
 
 ## Set up an easy-to-use verification environment
 
