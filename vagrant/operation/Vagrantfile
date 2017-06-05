@@ -17,7 +17,7 @@ EOF
 
 $sheep_install = <<EOF
 yum install -y sheepdog sheepdog-zookeeper nmap-ncat
-sh -c 'echo SHEEP_OPTS=\"--cluster zookeeper:zoo1:2181 --log dst=syslog --upgrade /var/lib/sheepdog,/mnt/sheep/dsk01\" > /etc/sysconfig/sheepdog'
+sh -c 'echo SHEEP_OPTS=\"--cluster zookeeper:zoo1:2181 --log dst=syslog -n --upgrade /var/lib/sheepdog,/mnt/sheep/dsk01\" > /etc/sysconfig/sheepdog'
 EOF
 
 $sheep_service = <<EOF
@@ -60,9 +60,15 @@ $script = <<EOF
 cp -pf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 echo 'ZONE="Asia/Tokyo"' > /etc/sysconfig/clock
 echo 'UTC=false' >> /etc/sysconfig/clock
-mv /vagrant/*.repo /etc/yum.repos.d/
+cp /vagrant/*.repo /etc/yum.repos.d/
+mkdir -p /etc/systemd/system/sheepdog.service.d
+cp /vagrant/etc-systemd-system-sheepdog.service.d-override.conf /etc/systemd/system/sheepdog.service.d/
 sh -c "echo DHCP_HOSTNAME=`hostname -s` >> /etc/sysconfig/network-scripts/ifcfg-eth0"
 service network restart
+
+sh -c "echo 6144000 > /proc/sys/fs/nr_open"
+## /etc/sysctl.d/99-sheepdog.conf
+## fs.nr_open = 6144000
 EOF
 
 # main
