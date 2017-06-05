@@ -1,0 +1,135 @@
+[root@localhost sheepdog]# ./tests/script/exec_functional
+~ snip ~~
+config.status: executing libtool commands
+
+sheepdog configuration:
+  Version                  = 1.0_142_g08841b9
+  Prefix                   = /usr
+  Executables              = ${exec_prefix}/sbin
+  Man pages                = ${datarootdir}/man
+  Doc dir                  = ${datarootdir}/doc/${PACKAGE_TARNAME}
+  Libraries                = ${exec_prefix}/lib
+  Header files             = ${prefix}/include
+  Arch-independent files   = ${datarootdir}
+  State information        = /var
+  System configuration     = ${prefix}/etc
+  System init.d directory  = ${prefix}/etc/init.d
+  sheepdog config dir      = ${prefix}/etc/sheepdog
+  Features                 =  zookeeper sheepfs
+
+sheepdog build info:
+  Library SONAME           =
+
+  Default optimization     = -DNDEBUG
+  Default debug options    =
+  Extra compiler warnings  =
+  Env. defined CFLAG       = -g -O2
+  Env. defined CPPFLAGS    =
+  Env. defined LDFLAGS     =
+  OS   defined CFLAGS      =
+  OS   defined CPPFLAGS    =
+  OS   defined LDFLAGS     =
+  OS   defined LDL         = -ldl
+  OS   defined DYFLAGS     =
+  ANSI defined CPPFLAGS    =
+  Coverage     CFLAGS      =
+  Coverage     LDFLAGS     =
+  Fatal War.   CFLAGS      =
+  Trace        CFLAGS      =
+  Final        CFLAGS      = -g -O2 -DNDEBUG -ggdb3        -Wall -Wshadow -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes -Wpointer-arith -Wwrite-strings -Wbad-function-cast -Wmissing-format-attribute -Wformat=2 -Wformat-security -Wformat-nonliteral -Wno-long-long -Wno-strict-aliasing -Wcast-align        -D_GNU_SOURCE -D_LGPL_SOURCE  -std=gnu99
+  Final        CPPFLAGS    =
+  Final        LDFLAGS     =
++ make
+~ snip ~~
++ exec_functional
++ sudo ./tests/functional/check -g
+PLATFORM      -- Linux/x86_64 localhost 3.10.0-514.16.1.el7.x86_64
+
+001  Test master node killing and master transfer
+002  Test master transfer for crashed cluster
+003  Test master transfer for crashed cluster
+004  Test membership, add one node after killing existing one node
+006  Test launching sheeps simultaneously
+007  Test cluster rejecting node with wrong epoch
+009  Test data integrity after joining a new node
+010  Test manual recovery command
+011  Test sheep booting on existing images mounted as loop device
+012  Test gateway only functionality
+013  Test snapshot functionality
+014  Test vdi setattr/getattr
+015  Test vdi setattr/getattr failure mode
+017  Test vdi tree functionality
+021  Test that format still works in a cluster that has only gateways
+022  Test that writing to a cluster that only has gateways fails
+023  Reproduce a joinstorm just after format
+024  Make sure data written to the cluster can be read from a newly joined node
+025  Check for a recovery segfault in older versions
+026  Test vdi create operation during node changes
+027  Test sheep recovery logic breadth-first algorithm
+028  Test sheep recovery logic
+032  Test recovery when we have less zones availability
+033  Test recovery after many nodes failed at the same time
+034  Test sheep joining with older objects
+036  Test format cluster just after sheeps start up
+039  Test vdi rollback
+040  Test vdi object recovery just after vdi creation
+041  Test vdi backup and restore
+042  Test disk full handling
+043  Test disk error handling
+045  Test partial vdi read and write
+046  Test vdi deletion
+050  Test IO NIC function
+051  Test cluster with too few living nodes
+054  Test stale objects purging with different disk size.
+056  Test md disk failure with node change events
+057  Test md hot-plug and hot-unplug
+060  Test reboot sheepdog without dog shutdown
+061  Test list preparation of sheep recovery logic
+062  Test unaligned dog vdi read/write
+064  Test node failure while reweighting
+068  Test rejoin cluster
+069  Test joining sheep with wrong and newer epoch
+070  Test join to the clean cluster
+071  Test partially zeroed data
+072  Test restart with missing object in stale directory
+073  Test sheepfs
+074  Test temporary object lost
+075  Test live snapshot under heavy workload
+076  Test sheep recovery logic for erasure coding
+079  Test sheep write/read/recovery logic for hyper volume
+080  Test sheep strict mode for write
+081  Test http service with a single server [not run] Require nginx but it's not running
+082  Test http service with multiple servers [not run] Require nginx but it's not running
+084  Test http interface of sheepfs [not run] Require nginx but it's not running
+085  Restart sheep with less disks in MD setup
+087  Test http service with Incompleted-objects [not run] Require nginx but it's not running
+089  Test http interface of sheepfs for cache [not run] Require nginx but it's not running
+090  Test 'append operation' in http service [not run] Require nginx but it's not running
+094  Test disk error handling on different size of disks
+095  Test disk error handling with full path name
+096  Test changing replica number
+097  Test iSCSI multipath functionality [not run] Require tgtd but it's not installed
+098  Test recovery process of erasure coding in a case of nr nodes < nr data stripe
+100  Test the functionality of reducing identical snapshots
+101  Test format option for store_driver(tree)
+102  Test object creation for store_driver(tree)
+103  Test auto recovery for store_driver(tree)
+104  Test restart cluster for store_driver(tree)
+105  Test a case of VID overflow
+106  Test a functionality of VID recycle
+107  Test dog node recovery set-throttle
+108  Test sheep -p/--port
+109  Test sheep -z/--zone
+110  Test sheep -V/--vnodes
+111  Test dog node vnodes set
+113  Test fixed vnodes feature more
+114  Test md plug and sparse object
+115  Test fixed vnodes feature (format)
+116  Test fixed vnodes feature (node join, auto cluster)
+117  Test fixed vnodes feature (node join, fixed cluster)
+118  Test fixed vnodes feature (node rejoin)
+Not run: 081 082 084 087 089 090 097
+Passed all 76 tests
++ tear_down
++ make clean
+~ snip ~~
