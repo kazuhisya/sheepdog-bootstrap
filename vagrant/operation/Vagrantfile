@@ -2,12 +2,12 @@
 
 # zookeeper script
 $zk_install = <<EOF
-yum install -y zookeeper zookeeper-server java-1.8.0-openjdk-headless
+yum install -y zookeeper zookeeper-server java-1.8.0-openjdk-headless sysstat lsof
 service zookeeper-server start
 EOF
 
 
-# sheepdpg script
+# sheepdog script
 $sheep_disk = <<EOF
 mkfs.xfs /dev/vdb
 mkdir -p /mnt/sheep/dsk01
@@ -16,13 +16,13 @@ mount -a
 EOF
 
 $sheep_install = <<EOF
-yum install -y sheepdog sheepdog-zookeeper nmap-ncat
+yum install -y sheepdog sheepdog-zookeeper nmap-ncat sysstat lsof
 sh -c 'echo SHEEP_OPTS=\"--cluster zookeeper:zoo1:2181 --log dst=syslog -n --upgrade /var/lib/sheepdog,/mnt/sheep/dsk01\" > /etc/sysconfig/sheepdog'
 EOF
 
 $sheep_service = <<EOF
 until echo srvr | nc -w 1 zoo1 2181; do
-  >&2 echo "zookeeper is unavailable - sleeping"
+  >&2 echo "zookeeper is not yet available - waiting..."
   sleep 30
 done
 systemctl start sheepdog
@@ -47,9 +47,8 @@ sh -c 'echo Alice > /mnt/sheepfs/vdi/mount'
 mkfs.xfs /mnt/sheepfs/volume/Alice
 mkdir -p /mnt/alice
 mount -o loop /mnt/sheepfs/volume/Alice /mnt/alice
-echo "# fallocate -l 1g /mnt/alice/dummy.dd"
-fallocate -l 1g /mnt/alice/dummy.dd
-sync
+echo "# dd if=/dev/zero of=/mnt/alice/dummy.dd bs=1M count=100"
+dd if=/dev/zero of=/mnt/alice/dummy.dd bs=1M count=100
 ls -lah /mnt/alice/dummy.dd
 df -hT
 EOF
