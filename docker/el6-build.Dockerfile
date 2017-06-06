@@ -3,7 +3,7 @@
 FROM centos:6
 
 RUN yum install -y epel-release && \
-    curl -L -o /etc/yum.repos.d/bigtop.repo http://www.apache.org/dist/bigtop/bigtop-1.1.0/repos/centos6/bigtop.repo && \
+    curl -L -o /etc/yum.repos.d/bigtop.repo http://www.apache.org/dist/bigtop/stable/repos/centos6/bigtop.repo && \
     yum install -y --nogpgcheck http://ymu.dl.osdn.jp/linux-ha/66141/pacemaker-repo-1.1.14-1.1.el6.x86_64.rpm && \
     yum install -y \
         autoconf automake bc check check-devel gcc gcc-c++ git libtool lsof \

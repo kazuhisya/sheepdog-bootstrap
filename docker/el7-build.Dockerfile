@@ -3,7 +3,7 @@
 FROM centos:7
 
 RUN yum install -y epel-release && \
-    curl -L -o /etc/yum.repos.d/bigtop.repo http://www.apache.org/dist/bigtop/bigtop-1.1.0/repos/centos7/bigtop.repo && \
+    curl -L -o /etc/yum.repos.d/bigtop.repo http://www.apache.org/dist/bigtop/stable/repos/centos7/bigtop.repo && \
     yum install -y \
         autoconf automake bc check check-devel gcc gcc-c++ git libtool lsof \
         make net-tools userspace-rcu userspace-rcu-devel yasm yasm-devel \
