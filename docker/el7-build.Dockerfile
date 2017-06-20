@@ -16,5 +16,5 @@ WORKDIR /root/sheepdog
 RUN git submodule update --init ./tests/unit/unity && \
     git submodule update --init ./tests/unit/cmock
 RUN ./autogen.sh && \
-    ./configure --enable-corosync --enable-zookeeper --enable-sheepfs && \
+    ./configure --enable-corosync --enable-zookeeper --enable-sheepfs --enable-diskvnodes && \
     LANG=C make -j8 rpm
