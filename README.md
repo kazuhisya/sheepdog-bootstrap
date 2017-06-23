@@ -34,24 +34,14 @@ $ docker build -t local/sheepdog:el7 -f ./el7-build.Dockerfile .
    - [vagrant](https://www.vagrantup.com/docs/) version 1.8.1 or higher
    - [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) version 0.0.32 or higher
 
-Operation:
+List:
 
-- [vagrant/operation-basic](vagrant/operation-basic)
-  - Zookeeper x1
-  - CentOS7.x Sheepdog x5 (form rpm)
-    - rpm from [copr repo](https://copr.fedorainfracloud.org/coprs/khara/sheepdog/)
-  - Performing basic installation and setup
-- [vagrant/operation-fs](vagrant/operation-fs)
-  - basic + sheepfs test
-- [vagrant/operation-iscsi](vagrant/operation-iscsi)
-  - basic + SCSI target framework (tgt) test
-- [vagrant/operation-all](vagrant/operation-all)
-  - basic + sheepfs + iscsi
-
-Test:
-
+- [vagrant/operation](vagrant/operation)
+    - Zookeeper x1
+    - CentOS7.x Sheepdog x5 (form rpm)
+      - rpm from [copr repo](https://copr.fedorainfracloud.org/coprs/khara/sheepdog/)
 - [vagrant/test](vagrant/test)
-    - Tests for CentOS7.x
+    - tests for CentOS7.x
 
 
 e.g.

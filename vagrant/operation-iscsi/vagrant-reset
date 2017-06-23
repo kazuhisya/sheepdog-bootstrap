@@ -1,3 +1,0 @@
-#!/bin/sh
-vagrant destroy
-virsh net-destroy vagrant-libvirt
