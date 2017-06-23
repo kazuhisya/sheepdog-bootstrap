@@ -8,6 +8,7 @@ EOF
 
 
 # sheepdog script
+## prepare for disk
 $sheep_disk = <<EOF
 mkfs.xfs /dev/vdb
 mkdir -p /mnt/sheep/dsk01
@@ -15,11 +16,13 @@ sh -c "echo /dev/vdb /mnt/sheep/dsk01 xfs defaults,noatime,nodiratime 0 1 >> /et
 mount -a
 EOF
 
+## install sheepdog
 $sheep_install = <<EOF
 yum install -y sheepdog sheepdog-zookeeper nmap-ncat sysstat lsof
 sh -c 'echo SHEEP_OPTS=\"--cluster zookeeper:zoo1:2181 --log dst=syslog -n --upgrade /var/lib/sheepdog,/mnt/sheep/dsk01\" > /etc/sysconfig/sheepdog'
 EOF
 
+## start sheepdog
 $sheep_service = <<EOF
 until echo srvr | nc -w 1 zoo1 2181; do
   >&2 echo "zookeeper is not yet available - waiting..."
@@ -27,7 +30,6 @@ until echo srvr | nc -w 1 zoo1 2181; do
 done
 systemctl start sheepdog
 EOF
-
 
 # sheepdog operation
 $sheep_ops = <<EOF
@@ -39,6 +41,7 @@ dog node info
 dog node md info --all
 EOF
 
+# sheepfs operation
 $sheepfs_ops = <<EOF
 yum install -y sheepdog-sheepfs
 mkdir -p /mnt/sheepfs
@@ -51,23 +54,6 @@ echo "# dd if=/dev/zero of=/mnt/alice/dummy.dd bs=1M count=100"
 dd if=/dev/zero of=/mnt/alice/dummy.dd bs=1M count=100
 ls -lah /mnt/alice/dummy.dd
 df -hT
-EOF
-
-# iscsi operation
-$iscsi_ops = <<EOF
-yum install -y scsi-target-utils policycoreutils selinux-policy-devel make --enablerepo=epel
-dog vdi create tgt0 10G
-systemctl start tgtd.service
-
-cp /vagrant/tgtd-socket.te .
-make -f /usr/share/selinux/devel/Makefile
-semodule -i tgtd-socket.pp
-
-tgtadm --op new --mode target --tid 1 --lld iscsi --targetname iqn.2017-06.org.sheepdog-project
-tgtadm --op new --mode lu --tid 1 --lun 2 --bstype sheepdog --backing-store unix:/var/lib/sheepdog/sock:tgt0
-tgtadm --lld iscsi --op bind --mode target --tid 1 -I ALL
-tgtadm --mode target --op show
-
 EOF
 
 # common script
@@ -117,8 +103,6 @@ Vagrant.configure(2) do |config|
         sheep.vm.provision "shell", privileged: true, inline: $sheep_ops
         sheep.vm.provision "shell", privileged: true, inline: $sheepfs_ops
         sheep.vm.network "forwarded_port", guest: "7000", host: "7000", gateway_ports: true, host_ip: "*"
-        sheep.vm.provision "shell", privileged: true, inline: $iscsi_ops
-        sheep.vm.network "forwarded_port", guest: "3260", host: "3260", gateway_ports: true, host_ip: "*"
       end
     end
   end

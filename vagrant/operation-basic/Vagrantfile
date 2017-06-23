@@ -1,0 +1,97 @@
+# vi: set ft=ruby :
+
+# zookeeper script
+$zk_install = <<EOF
+yum install -y zookeeper zookeeper-server java-1.8.0-openjdk-headless sysstat lsof
+service zookeeper-server start
+EOF
+
+
+# sheepdog script
+## prepare for disk
+$sheep_disk = <<EOF
+mkfs.xfs /dev/vdb
+mkdir -p /mnt/sheep/dsk01
+sh -c "echo /dev/vdb /mnt/sheep/dsk01 xfs defaults,noatime,nodiratime 0 1 >> /etc/fstab"
+mount -a
+EOF
+
+## install sheepdog
+$sheep_install = <<EOF
+yum install -y sheepdog sheepdog-zookeeper nmap-ncat sysstat lsof
+sh -c 'echo SHEEP_OPTS=\"--cluster zookeeper:zoo1:2181 --log dst=syslog -n --upgrade /var/lib/sheepdog,/mnt/sheep/dsk01\" > /etc/sysconfig/sheepdog'
+EOF
+
+## start sheepdog
+$sheep_service = <<EOF
+until echo srvr | nc -w 1 zoo1 2181; do
+  >&2 echo "zookeeper is not yet available - waiting..."
+  sleep 30
+done
+systemctl start sheepdog
+EOF
+
+
+# sheepdog operation
+$sheep_ops = <<EOF
+sleep 30
+dog cluster format --copies 3
+dog vdi create Alice 5G
+dog vdi list
+dog node info
+dog node md info --all
+EOF
+
+# common script
+$script = <<EOF
+cp -pf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+echo 'ZONE="Asia/Tokyo"' > /etc/sysconfig/clock
+echo 'UTC=false' >> /etc/sysconfig/clock
+cp /vagrant/*.repo /etc/yum.repos.d/
+mkdir -p /etc/systemd/system/sheepdog.service.d
+cp /vagrant/etc-systemd-system-sheepdog.service.d-override.conf /etc/systemd/system/sheepdog.service.d/
+sh -c "echo DHCP_HOSTNAME=`hostname -s` >> /etc/sysconfig/network-scripts/ifcfg-eth0"
+service network restart
+
+sh -c "echo 6144000 > /proc/sys/fs/nr_open"
+## /etc/sysctl.d/99-sheepdog.conf
+## fs.nr_open = 6144000
+EOF
+
+# main
+Vagrant.configure(2) do |config|
+  config.vm.box = "centos/7"
+
+  # libvirt settings
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.cpus = 1
+    libvirt.memory = 1024
+    libvirt.storage :file, :device => "vdb", :size => "10G", :type => "qcow2"
+  end
+
+  config.vm.synced_folder "./", "/vagrant", disabled: false
+
+  # zookeeper instance
+  config.vm.define :zk do | zk |
+    zk.vm.hostname = "zoo1"
+    zk.vm.provision "shell", privileged: true, inline: $zk_install
+  end
+
+  # sheepdog instance
+  (1..5).each do |num|
+    config.vm.define "sheep#{num}" do | sheep |
+      sheep.vm.hostname = "sheep#{num}"
+      sheep.vm.provision "shell", privileged: true, inline: $sheep_disk
+      sheep.vm.provision "shell", privileged: true, inline: $sheep_install
+      sheep.vm.provision "shell", privileged: true, inline: $sheep_service
+      sheep.vm.network "forwarded_port", guest: "7000", host: "700#{num}", gateway_ports: true, host_ip: "*"
+      if "#{num}" == "1"
+        sheep.vm.provision "shell", privileged: true, inline: $sheep_ops
+        sheep.vm.network "forwarded_port", guest: "7000", host: "7000", gateway_ports: true, host_ip: "*"
+      end
+    end
+  end
+
+  # common script
+  config.vm.provision "shell", privileged: true, inline: $script
+end
