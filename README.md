@@ -40,8 +40,10 @@ List:
     - Zookeeper x1
     - CentOS7.x Sheepdog x5 (form rpm)
       - rpm from [copr repo](https://copr.fedorainfracloud.org/coprs/khara/sheepdog/)
-- [vagrant/test](vagrant/test)
-    - tests for CentOS7.x
+- [vagrant/tests-centos7](vagrant/tests-centos7)
+    - Exec tests for CentOS7.x
+- [vagrant/tests-ub1404](vagrant/tests-ub1404)
+    - Exec tests for Ubuntu 14.04 LTS (Trusty Tahr)
 
 
 e.g.

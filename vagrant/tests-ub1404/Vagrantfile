@@ -1,0 +1,22 @@
+# vi: set ft=ruby :
+
+$script = <<EOF
+uname -a
+git clone --depth=1 https://github.com/kazuhisya/sheepdog/
+./sheepdog/tests/script/prepare_for_test
+EOF
+
+Vagrant.configure(2) do |config|
+  config.vm.define :trusty_minimal do |trusty_minimal|
+    trusty_minimal.vm.box = "elastic/ubuntu-14.04-x86_64"
+  end
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.cpus = 2
+    libvirt.memory = 2048
+  end
+
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.provision "shell", privileged: false, inline: $script
+end
