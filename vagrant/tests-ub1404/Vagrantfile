@@ -10,10 +10,6 @@ EOF
 ## from local
 $from_local = <<EOF
 sudo apt-get --quiet --no-install-recommends -y install git
-sudo chown vagrant.vagrant -R /vagrant
-cd /vagrant/sheepdog
-git submodule update --init ./tests/unit/unity
-git submodule update --init ./tests/unit/cmock
 EOF
 # vi: set ft=ruby :
 
@@ -21,6 +17,8 @@ EOF
 $exec_test = <<EOF
 sudo chown vagrant.vagrant -R /vagrant
 cd /vagrant/sheepdog
+git submodule update --init ./tests/unit/unity
+git submodule update --init ./tests/unit/cmock
 
 # prepare
 ./tests/script/prepare_for_test

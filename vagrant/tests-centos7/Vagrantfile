@@ -10,16 +10,15 @@ EOF
 ## from local
 $from_local = <<EOF
 sudo yum install -y git
-sudo chown vagrant.vagrant -R /vagrant
-cd /vagrant/sheepdog
-git submodule update --init ./tests/unit/unity
-git submodule update --init ./tests/unit/cmock
 EOF
 
 ## test
 $exec_test = <<EOF
 sudo chown vagrant.vagrant -R /vagrant
 cd /vagrant/sheepdog
+git submodule update --init ./tests/unit/unity
+git submodule update --init ./tests/unit/cmock
+
 sudo sh -c "echo 6144000 > /proc/sys/fs/nr_open"
 
 # prepare
