@@ -18,13 +18,21 @@ List:
     - CentOS6.x Build Test (from upstream git)
 - [el7-build.Dockerfile](docker/el7-build.Dockerfile)
     - CentOS7.x Build Test (from upstream git)
+- [docker-compose](docker/compose/)
+    - CentOS7.x Docker Compose version
 
 
 e.g.
 
-```bash
+```code
 $ cd docker
 $ docker build -t local/sheepdog:el7 -f ./el7-build.Dockerfile .
+```
+
+```code
+$ cd docker/compose
+$ docker-compose build
+$ docker-compose up --scale sheep=32 -d
 ```
 
 
@@ -48,7 +56,7 @@ List:
 
 e.g.
 
-```bash
+```code
 $ cd vagrant/operation
 $ vagrant up
 ```
