@@ -4,37 +4,37 @@
 ## Build image
 
 ```code
-# docker-compose build
+$ docker-compose build
 ```
 
 ## Up
 
 ```code
-# docker-compose up --scale sheep=32 -d --remove-orphans
+$ docker-compose up --scale sheep=32 -d --remove-orphans
 ```
 
 or
 
 ```code
-docker-compose -f ./docker-compose-zoo3.yml up --scale sheep=32 -d --remove-orphans
+$ docker-compose -f ./docker-compose-zoo3.yml up --scale sheep=32 -d --remove-orphans
 ```
 
 ## Login sheep1
 
 ```code
-# docker exec -it compose_sheep_1 bash
+$ docker exec -it compose_sheep_1 bash
 ```
 
 ## Cluster format
 
 ```code
-# dog cluster format
+$ dog cluster format
 ```
 
 ## Other ops...
 
 ```code
-# dog node info
+$ dog node info
 Id  Size    Used    Avail   Use%
  0  46 GB   0.0 MB  46 GB     0%
  1  46 GB   0.0 MB  46 GB     0%
@@ -72,7 +72,7 @@ Total   1.4 TB  0.0 MB  1.4 TB    0%
 ```
 
 ```code
-# dog node list
+$ dog node list
   Id   Host:Port         V-Nodes       Zone
    0   172.18.0.3:7000      12   50336428
    1   172.18.0.4:7000      12   67113644
