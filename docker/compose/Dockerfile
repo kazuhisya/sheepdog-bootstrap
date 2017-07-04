@@ -6,9 +6,9 @@ ENV SHEEPPORT 7000
 ENV SHEEPSTORE /store
 
 COPY addon.repo /etc/yum.repos.d/addon.repo
-COPY run.sh /root/run.sh
-RUN yum install -y zookeeper java-1.8.0-openjdk-headless sheepdog sheepdog-zookeeper nmap-ncat bash-completion
-
-RUN mkdir -p $SHEEPSTORE
-
+RUN yum install --setopt=tsflags=nodocs -y \
+        bash-completion java-1.8.0-openjdk-headless nmap-ncat \
+        sheepdog sheepdog-zookeeper zookeeper && \
+    yum clean all && \
+    mkdir -p $SHEEPSTORE
 EXPOSE $SHEEPPORT
