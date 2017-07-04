@@ -7,8 +7,8 @@ ENV SHEEPSTORE /store
 
 COPY addon.repo /etc/yum.repos.d/addon.repo
 RUN yum install --setopt=tsflags=nodocs -y \
-        bash-completion java-1.8.0-openjdk-headless nmap-ncat \
-        perl sheepdog sheepdog-zookeeper zookeeper && \
+        bash-completion nmap-ncat \
+        perl sheepdog sheepdog-zookeeper && \
     yum clean all && \
     mkdir -p $SHEEPSTORE
 EXPOSE $SHEEPPORT
