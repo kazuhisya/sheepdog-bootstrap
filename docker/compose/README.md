@@ -1,14 +1,37 @@
 # sheepdog on docker-compose
 
+
+## Build image
+
 ```code
 # docker-compose build
-# docker-compose up --scale sheep=32 -d
+```
+
+## Up
+
+```code
+# docker-compose up --scale sheep=32 -d --remove-orphans
+```
+
+or
+
+```code
+docker-compose -f ./docker-compose-zoo3.yml up --scale sheep=32 -d --remove-orphans
+```
+
+## Login sheep1
+
+```code
 # docker exec -it compose_sheep_1 bash
 ```
+
+## Cluster format
 
 ```code
 # dog cluster format
 ```
+
+## Other ops...
 
 ```code
 # dog node info
