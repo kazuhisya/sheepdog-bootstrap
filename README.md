@@ -19,7 +19,9 @@ List:
 - [el7-build.Dockerfile](docker/el7-build.Dockerfile)
     - CentOS7.x Build Test (from upstream git)
 - [docker-compose](docker/compose/)
-    - CentOS7.x Docker Compose version
+    - CentOS7.x Docker Compose Version
+- [single-node-ops](docker/single-node-ops/)
+    - CentOS7.x Docker Single Version
 
 
 e.g.
@@ -35,6 +37,10 @@ $ docker-compose build
 $ docker-compose up --scale sheep=32 -d
 ```
 
+```code
+$ cd docker/csingle-node-ops
+$ ./build.sh
+```
 
 ### Vagrant version usage
 
