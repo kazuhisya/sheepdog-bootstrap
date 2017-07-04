@@ -18,8 +18,9 @@ services:
       - 7000
     links:
       - zoo1:ZK1
-    command: '/usr/sbin/sheep --cluster zookeeper:zoo1:2181 --log dst=syslog --upgrade /store -p 7000 -n -f'
+    command: '/root/run.sh'
     environment:
       TZ: 'JST-9'
+      ZOO_SERVERS: 'zoo1:2181'
     depends_on:
       - zoo1

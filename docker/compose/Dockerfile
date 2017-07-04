@@ -12,3 +12,4 @@ RUN yum install --setopt=tsflags=nodocs -y \
     yum clean all && \
     mkdir -p $SHEEPSTORE
 EXPOSE $SHEEPPORT
+COPY run.sh /root/run.sh
