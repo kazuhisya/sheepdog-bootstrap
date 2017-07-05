@@ -1,9 +1,16 @@
-[root@localhost sheepdog]# ./tests/script/exec_functional
-~ snip ~~
-config.status: executing libtool commands
+[vagrant@localhost sheepdog]$ ./tests/script/prepare_for_test
++ export LANG=C LC_ALL=C
++ LANG=C
++ LC_ALL=C
++ USR_PATH=/usr
++ VAR_PATH=/var
++ set_up
++ ./autogen.sh
+
+~~ snip ~~
 
 sheepdog configuration:
-  Version                  = 1.0_142_g08841b9
+  Version                  = 1.0_159_ga23755f
   Prefix                   = /usr
   Executables              = ${exec_prefix}/sbin
   Man pages                = ${datarootdir}/man
@@ -39,11 +46,14 @@ sheepdog build info:
   Final        CFLAGS      = -g -O2 -DNDEBUG -ggdb3        -Wall -Wshadow -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes -Wpointer-arith -Wwrite-strings -Wbad-function-cast -Wmissing-format-attribute -Wformat=2 -Wformat-security -Wformat-nonliteral -Wno-long-long -Wno-strict-aliasing -Wcast-align        -D_GNU_SOURCE -D_LGPL_SOURCE  -std=gnu99
   Final        CPPFLAGS    =
   Final        LDFLAGS     =
-+ make
-~ snip ~~
+++ nproc
++ make -j 4
+
+~~ snip ~~
+
 + exec_functional
 + sudo ./tests/functional/check -g
-PLATFORM      -- Linux/x86_64 localhost 3.10.0-514.16.1.el7.x86_64
+PLATFORM      -- Linux/x86_64 localhost 3.10.0-514.21.2.el7.x86_64
 
 001  Test master node killing and master transfer
 002  Test master transfer for crashed cluster
@@ -132,4 +142,5 @@ Not run: 081 082 084 087 089 090 097
 Passed all 76 tests
 + tear_down
 + make clean
-~ snip ~~
+
+~~ snip ~~
