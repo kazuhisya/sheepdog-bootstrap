@@ -14,9 +14,9 @@ For easy operation check, you can use [Docker](https://www.docker.com/) or [Vagr
 
 List:
 
-- [el6-build.Dockerfile](docker/el6-build.Dockerfile)
+- [el6-build.Dockerfile](docker/build/el6-build.Dockerfile)
     - CentOS6.x Build Test (from upstream git)
-- [el7-build.Dockerfile](docker/el7-build.Dockerfile)
+- [el7-build.Dockerfile](docker/build/el7-build.Dockerfile)
     - CentOS7.x Build Test (from upstream git)
 - [docker-compose](docker/compose/)
     - CentOS7.x Docker Compose Version
