@@ -58,6 +58,8 @@ List:
     - Exec tests for CentOS7.x
 - [vagrant/tests-ub1404](vagrant/tests-ub1404)
     - Exec tests for Ubuntu 14.04 LTS (Trusty Tahr)
+- [vagrant/tests-ub1604](vagrant/tests-ub1604)
+    - Exec tests for Ubuntu 16.04 LTS (Xenial Xerus)
 
 
 e.g.

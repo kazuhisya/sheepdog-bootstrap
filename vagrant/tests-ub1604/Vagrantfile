@@ -1,0 +1,51 @@
+# vi: set ft=ruby :
+
+## from git
+$from_git = <<EOF
+sudo apt-get --quiet --no-install-recommends -y install git
+sudo mkdir -p /vagrant && sudo chown vagrant.vagrant -R /vagrant
+git clone --depth 1 https://github.com/kazuhisya/sheepdog /vagrant/sheepdog
+EOF
+
+## from local
+$from_local = <<EOF
+sudo apt-get --quiet --no-install-recommends -y install git
+EOF
+# vi: set ft=ruby :
+
+## test
+$exec_test = <<EOF
+sudo chown vagrant.vagrant -R /vagrant
+cd /vagrant/sheepdog
+git submodule update --init ./tests/unit/unity
+git submodule update --init ./tests/unit/cmock
+
+# prepare
+./tests/script/prepare_for_test
+
+# exec test
+#./tests/script/exec_unit
+#./tests/script/exec_operation
+#./tests/script/exec_functional
+EOF
+
+Vagrant.configure(2) do |config|
+  config.vm.define :xenial_minimal do |xenial_minimal|
+    xenial_minimal.vm.box = "elastic/ubuntu-16.04-x86_64"
+  end
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.cpus = 2
+    libvirt.memory = 2048
+  end
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # for local repo
+  #config.vm.synced_folder "./sheepdog", "/vagrant/sheepdog", disabled: "false", type: "rsync"
+  #config.vm.provision "shell", privileged: false, inline: $from_local
+  #config.vm.provision "shell", privileged: false, inline: $exec_test
+
+  # for git repo
+  config.vm.provision "shell", privileged: false, inline: $from_git
+  config.vm.provision "shell", privileged: false, inline: $exec_test
+end
