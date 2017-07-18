@@ -1,0 +1,43 @@
+version: '2'
+services:
+
+  etcd:
+    image: quay.io/coreos/etcd
+    environment:
+      TZ: 'JST-9'
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:4001,http://0.0.0.0:2379
+      ETCD_ADVERTISE_CLIENT_URLS: http://localhost:4001,http://localhost:2379
+    restart: always
+    ports:
+      - 2379
+      - 2380
+      - 4001
+
+  zetcd:
+    image: quay.io/coreos/zetcd
+    environment:
+      TZ: 'JST-9'
+    restart: always
+    links:
+        - etcd:etcd
+    ports:
+      - 2181
+    depends_on:
+      - etcd
+    command: "-endpoints etcd:2379"
+
+  sheep:
+    build: .
+    restart: always
+    ports:
+      - 7000
+    links:
+      - zetcd
+      - zetcd:zoo1
+    command: '/root/run.sh'
+    environment:
+      TZ: 'JST-9'
+      ZOO_SERVERS: 'zoo1:2181'
+    depends_on:
+      - zetcd
+
