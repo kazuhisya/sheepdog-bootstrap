@@ -40,4 +40,7 @@ services:
       ZOO_SERVERS: 'zoo1:2181'
     depends_on:
       - zetcd
-
+    volumes:
+      - sheepstore:/store
+volumes:
+  sheepstore:

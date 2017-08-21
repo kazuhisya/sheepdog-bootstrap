@@ -24,3 +24,7 @@ services:
       ZOO_SERVERS: 'zoo1:2181'
     depends_on:
       - zoo1
+    volumes:
+      - sheepstore:/store
+volumes:
+  sheepstore:
