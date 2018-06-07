@@ -25,6 +25,6 @@ services:
     depends_on:
       - zoo1
     volumes:
-      - sheepstore:/store
+      - sheepstore:/store:z
 volumes:
   sheepstore:

@@ -47,6 +47,6 @@ services:
       - zoo2
       - zoo3
     volumes:
-      - sheepstore:/store
+      - sheepstore:/store:z
 volumes:
   sheepstore:

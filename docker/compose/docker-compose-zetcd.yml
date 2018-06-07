@@ -41,6 +41,6 @@ services:
     depends_on:
       - zetcd
     volumes:
-      - sheepstore:/store
+      - sheepstore:/store:z
 volumes:
   sheepstore:
